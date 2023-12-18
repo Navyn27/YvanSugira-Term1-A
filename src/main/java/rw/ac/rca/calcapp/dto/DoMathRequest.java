@@ -5,6 +5,9 @@ public class DoMathRequest {
     private double operand2;
     private String operation;
 
+    public DoMathRequest(int i, int i1, String s) {
+    }
+
     public double getOperand1() {
         return operand1;
     }
