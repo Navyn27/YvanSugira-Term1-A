@@ -1,16 +1,21 @@
 package rw.ac.rca.calcapp;
 
-import io.restassured.RestAssured;
-import io.restassured.http.ContentType;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.boot.web.server.LocalServerPort;
+import org.springframework.boot.test.web.server.LocalServerPort;
+import org.springframework.http.HttpEntity;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpMethod;
+import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.client.RestTemplate;
+import rw.ac.rca.calcapp.dto.DoMathRequest;
 
-import static io.restassured.RestAssured.given;
-import static org.hamcrest.Matchers.equalTo;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
-class MathControllerEndToEndTest {
+@SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
+class MathControllerEndTest {
 
     @LocalServerPort
     private int port;
@@ -20,19 +25,21 @@ class MathControllerEndToEndTest {
 
     @Test
     void testDoMathEndToEnd() {
-        RestAssured.baseURI = "http://localhost";
-        RestAssured.port = port;
+        RestTemplate restTemplate = new RestTemplate();
+
+        HttpHeaders headers = new HttpHeaders();
+        headers.setContentType(MediaType.APPLICATION_JSON);
 
         DoMathRequest request = new DoMathRequest(5, 3, "*");
 
-        given()
-                .contentType(ContentType.JSON)
-                .body(request)
-                .when()
-                .post(contextPath + "/api/math/doMath")
-                .then()
-                .statusCode(200)
-                .contentType(ContentType.JSON)
-                .body("calcResponse", equalTo(15.0));
+        HttpEntity<DoMathRequest> requestEntity = new HttpEntity<>(request, headers);
+
+        String url = "http://localhost:" + port + contextPath + "/api/math/doMath";
+
+        ResponseEntity<Double> responseEntity = restTemplate.exchange(url, HttpMethod.POST, requestEntity, Double.class);
+
+        assertEquals(200, responseEntity.getStatusCodeValue());
+        assertEquals(MediaType.APPLICATION_JSON, responseEntity.getHeaders().getContentType());
+        assertEquals(15.0, responseEntity.getBody());
     }
 }
