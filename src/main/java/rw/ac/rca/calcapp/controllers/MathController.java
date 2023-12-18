@@ -11,9 +11,7 @@ import rw.ac.rca.calcapp.services.MathOperator;
 @RestController
 @RequestMapping("/api/math")
 public class MathController {
-
     private final MathOperator mathOperator;
-
     @Autowired
     public MathController(MathOperator mathOperator) {
         this.mathOperator = mathOperator;

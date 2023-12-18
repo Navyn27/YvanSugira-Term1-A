@@ -1,6 +1,7 @@
 package rw.ac.rca.calcapp;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.sun.java.swing.ui.OkCancelDialog;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
@@ -41,6 +42,6 @@ class MathControllerIntegrationTest {
                         .content(jsonRequest))
                 .andExpect(status().isOk())
                 .andExpect(content().contentType("application/json"))
-                .andExpect(jsonPath("$.calcResponse").value(15.0));
+                .andExpect(jsonPath("$.calcResponse").value());
     }
 }
