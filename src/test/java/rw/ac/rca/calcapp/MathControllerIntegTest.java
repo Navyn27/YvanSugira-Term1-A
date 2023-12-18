@@ -1,7 +1,6 @@
 package rw.ac.rca.calcapp;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.sun.java.swing.ui.OkCancelDialog;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
@@ -16,17 +15,12 @@ import rw.ac.rca.calcapp.services.MathOperator;
 import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
-@SpringBootTest
-@AutoConfigureMockMvc
 class MathControllerIntegrationTest {
 
-    @Autowired
     private MockMvc mockMvc;
 
-    @Autowired
     private ObjectMapper objectMapper;
 
-    @MockBean
     private MathOperator mathOperator;  // Mocking the MathOperator dependency
 
     @Test
@@ -42,6 +36,6 @@ class MathControllerIntegrationTest {
                         .content(jsonRequest))
                 .andExpect(status().isOk())
                 .andExpect(content().contentType("application/json"))
-                .andExpect(jsonPath("$.calcResponse").value());
+                .andExpect(jsonPath("$.calcResponse").value(15.0));
     }
 }

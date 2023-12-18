@@ -19,10 +19,8 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @WebMvcTest(MathController.class)
 public class MathControllerTest {
 
-        @Autowired
         private MockMvc mockMvc;
 
-        @Autowired
         private ObjectMapper objectMapper;
 
         @Test
